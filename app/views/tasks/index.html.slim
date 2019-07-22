@@ -1,0 +1,20 @@
+h1 タスク一覧
+
+=link_to "新規登録", new_task_path, class: "btn btn-primary"
+
+.mb-3
+table.table.table-striped
+  thead.thead-default
+    tr
+      th タスク名
+      th 期限
+      th 優先順位
+      th ステータス
+
+  tbody
+    -@tasks.each do |task|
+      tr
+        td= task.name
+        td= task.deadline
+        td= task.priority
+        td= task.status

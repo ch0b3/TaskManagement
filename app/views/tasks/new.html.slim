@@ -1,0 +1,26 @@
+h1 新規タスク作成
+
+.nav.justify-content-end
+  = link_to "一覧", tasks_path, class: "nav-link"
+
+= form_tag("/tasks") do
+  .form-group
+    p タスク名
+    input name="name"
+
+  .form-group
+    p 説明文
+    textarea name="description"
+
+  .form-group
+    p 期限
+    input name="deadline"
+
+    /p ラベル
+    /input name="label"
+
+  .form-group
+    p 優先順位
+    input name="priority"
+
+  input type="submit" value="作成", class: "btn btn-primary"
