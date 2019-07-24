@@ -6,15 +6,15 @@ h1 タスク一覧
 table.table.table-striped
   thead.thead-default
     tr
-      th タスク名
-      th 期限
-      th 優先順位
-      th ステータス
+      th= Task.human_attribute_name(:name)
+      th= Task.human_attribute_name(:deadline)
+      th= Task.human_attribute_name(:priority)
+      th= Task.human_attribute_name(:status)
 
   tbody
     -@tasks.each do |task|
       tr
-        td= task.name
-        td= task.deadline
-        td= task.priority
-        td= task.status
+        td= link_to task.name, task_path(task)
+        td=  task.deadline
+        td=  task.priority
+        td=  task.status

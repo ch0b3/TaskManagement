@@ -8,23 +8,24 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(
-      name: params[:name],
-      description: params[:description],
-      deadline: params[:deadline],
-      # label: params[:label],
-      priority: params[:priority]
-    )
+    @task = Task.new(task_params)
 
     if @task.save
-      flash[:notice] = "タスクを作成しました"
-      redirect_to("/tasks")
+      redirect_to tasks_path, notice: "タスク「#{@task.name}」を作成しました"
     else
       render("tasks/new")
     end
 
   end
 
+  def show
+    @task = Task.find(params[:id])
+  end
 
+  private
+
+  def task_params
+    params.require(:task).permit(:name,:description,:priority,:deadline)
+  end
 
 end

@@ -12,7 +12,6 @@ html
     .app-title.navbar.navbar-expand-md.navbar-light.bg-Highlight
       .navbar-brand TaskManagement
     .container
-    
-    - if flash[:notice]
-      = flash[:notice]
-    == yield
+      - if flash[:notice]
+        .alert.alert-success= flash[:notice]
+      == yield
