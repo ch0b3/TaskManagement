@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title TaskManagement
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    = stylesheet_link_tag 'application', media: 'all'
+    = javascript_include_tag 'application'
+
+  body
+    .app-title.navbar.navbar-expand-md.navbar-light.bg-Highlight
+      .navbar-brand TaskManagement
+    .container
+      - if flash[:notice]
+        .alert.alert-success= flash[:notice]
+      == yield
