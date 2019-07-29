@@ -13,13 +13,27 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to tasks_path, notice: "タスク「#{@task.name}」を作成しました"
     else
-      render("tasks/new")
+      render :action => "new"
     end
 
   end
 
   def show
     @task = Task.find(params[:id])
+  end
+
+  def edit
+    @task = Task.find(params[:id])
+  end
+
+  def update
+    @task = Task.find(params[:id])
+    
+    if @task.update(task_params)
+      redirect_to task_path(@task), notice: "タスク「#{@task.name}」を更新しました。"
+    else
+      render :action => "edit"
+    end
   end
 
   private
