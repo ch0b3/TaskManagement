@@ -1,3 +1,3 @@
 class Task < ApplicationRecord
-  # belongs_to :priority, :class_name => 'Priority'
+  belongs_to :priority
 end

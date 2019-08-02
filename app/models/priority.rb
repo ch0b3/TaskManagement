@@ -1,3 +1,3 @@
 class Priority < ApplicationRecord
-  # has_one :task, :primary => 'priority'
+  has_many :tasks
 end
