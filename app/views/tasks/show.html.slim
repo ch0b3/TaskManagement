@@ -16,7 +16,7 @@ table.table.table-hover
       td= @task.deadline
     tr
       th= Task.human_attribute_name(:priority)
-      td= @task.priority
+      td= @task.priority.value
     tr
       th= Task.human_attribute_name(:status)
       td= @task.status
