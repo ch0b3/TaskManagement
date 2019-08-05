@@ -5,6 +5,7 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
+    @priorities = Priority.all
   end
 
   def create
@@ -24,6 +25,7 @@ class TasksController < ApplicationController
 
   def edit
     @task = Task.find(params[:id])
+    @priorities = Priority.all
   end
 
   def update
