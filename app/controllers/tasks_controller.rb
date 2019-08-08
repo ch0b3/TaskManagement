@@ -15,6 +15,8 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to tasks_path, notice: "タスク「#{@task.name}」を作成しました"
     else
+      @priorities = Priority.all
+      @statuses = Status.all
       render :action => "new"
     end
 
@@ -36,6 +38,8 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       redirect_to tasks_path, notice: "タスク「#{@task.name}」を更新しました。"
     else
+      @priorities = Priority.all
+      @statuses = Status.all
       render :action => "edit"
     end
   end
