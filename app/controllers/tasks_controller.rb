@@ -1,10 +1,11 @@
 class TasksController < ApplicationController
   def index
-    @tasks = Task.all.order(created_at: :desc)
+    @tasks = Task.joins(:priority).includes(:priority).order(created_at: :desc)
   end
 
   def new
     @task = Task.new
+    @priorities = Priority.all
   end
 
   def create
@@ -24,6 +25,7 @@ class TasksController < ApplicationController
 
   def edit
     @task = Task.find(params[:id])
+    @priorities = Priority.all
   end
 
   def update
@@ -45,7 +47,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:name,:description,:priority,:deadline)
+    params.require(:task).permit(:name,:description,:priority_id,:deadline)
   end
 
 end
