@@ -1,7 +1,27 @@
 # Ruby on Rails on Docker
 
+
 ## Model diagram
-- ![モデル図](https://github.com/takashi-5/TaskManagement/blob/images/docs/IMG_1742.JPG "サンプル")
+ ![モデル図](https://github.com/takashi-5/TaskManagement/blob/images/docs/IMG_1742.JPG "サンプル")
+
+## Deploy infomation
+### herokuを使用したデプロイ
+
+- herokuにログイン
+```bash
+$ heroku login
+```
+- サーバー作成
+```bash
+$ heroku create takashi-task-management
+```
+- gitでデプロイ
+```bash
+$ git push heroku master
+$ heroku run rails db:migrate
+```
+- URL
+https://takashi-task-management.herokuapp.com/
 
 
 ## Ruby version
