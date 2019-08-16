@@ -2,7 +2,7 @@ class Task < ApplicationRecord
   belongs_to :priority
   belongs_to :status_id, :class_name => "Status", foreign_key: "status"
 
-  before_create :set_default_status
+  before_validation :set_default_status
 
   validates :name, presence: true, length: { maximum: 30 }
   validates :description, presence: true, length: { maximum: 100 }
@@ -19,7 +19,7 @@ class Task < ApplicationRecord
   end
 
   def set_default_status
-    self.status = 3
+    self.status = 3 if self.status.blank?
   end
 
 end
