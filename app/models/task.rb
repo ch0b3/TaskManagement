@@ -1,7 +1,7 @@
 class Task < ApplicationRecord
   belongs_to :priority
 
-  before_create :set_default_status
+  before_validation :set_default_status
 
   private
 
