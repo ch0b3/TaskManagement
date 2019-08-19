@@ -9,7 +9,7 @@ class Task < ApplicationRecord
   private
 
   def set_default_status
-    self.status = 3
+    self.status = 3 if self.status.blank?
   end
 
 end
