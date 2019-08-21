@@ -1,6 +1,21 @@
 class TasksController < ApplicationController
   def index
-    @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(created_at: :desc)
+    if params[:sort].present?
+      case params[:sort].to_i
+      when 1 then
+        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(deadline: :desc)
+      when 2 then
+        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(deadline: :asc)
+      when 3 then
+        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(priority_id: :desc)
+      when 4 then
+        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(priority_id: :asc)
+      else
+        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(priority_id: :desc)
+      end
+    else
+      @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(created_at: :desc)
+    end
   end
 
   def new

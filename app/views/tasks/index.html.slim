@@ -8,8 +8,8 @@ table.table.table-striped
     tr
       th
       th= Task.human_attribute_name(:name)
-      th= Task.human_attribute_name(:deadline)
-      th= Task.human_attribute_name(:priority)
+      th== Task.human_attribute_name(:deadline) + link_to(" ▼",tasks_path(sort: 1)) + link_to("▲", tasks_path(sort: 2))
+      th== Task.human_attribute_name(:priority) + link_to(" ▼",tasks_path(sort: 3)) + link_to("▲", tasks_path(sort: 4))
       th= Task.human_attribute_name(:status)
       th
 
