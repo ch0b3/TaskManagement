@@ -1,18 +1,7 @@
 class TasksController < ApplicationController
   def index
-    if params[:sort].present?
-      case params[:sort].to_i
-      when 1 then
-        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(deadline: :desc)
-      when 2 then
-        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(deadline: :asc)
-      when 3 then
-        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(priority_id: :desc)
-      when 4 then
-        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(priority_id: :asc)
-      else
-        @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(priority_id: :desc)
-      end
+    if params[:sort_column].present? && params[:sort_direction].present?
+      @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(params[:sort_column] + ' ' + params[:sort_direction])
     else
       @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(created_at: :desc)
     end
