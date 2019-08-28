@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   def index
-    @tasks = Task.joins(:priority).includes(:priority).order(created_at: :desc)
+    @tasks = Task.joins(:priority).includes(:priority).order(created_at: :desc).page(params[:page])
   end
 
   def new
