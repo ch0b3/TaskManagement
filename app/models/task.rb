@@ -12,12 +12,14 @@ class Task < ApplicationRecord
   validates :priority_id, presence: true, numericality: { only_integer: true }
   validate :not_before_today
 
-  def self.search(search)
-      if search
-        Task.joins(:priority, :status_id).includes(:priority, :status_id).where(['name LIKE ?', "%#{search}%"])
-      else
-        Task.joins(:priority, :status_id).includes(:priority, :status_id).all
-      end
+  def self.search(name,status_id)
+    if name.present? && status_id.present?
+      Task.joins(:priority, :status_id).includes(:priority, :status_id).where(['tasks.name LIKE ?', "%#{name}%"]).where(status: status_id)
+    elsif name.blank?
+      Task.joins(:priority, :status_id).includes(:priority, :status_id).where(status: status_id)
+    elsif status_id.blank?
+      Task.joins(:priority, :status_id).includes(:priority, :status_id).where(['tasks.name LIKE ?', "%#{name}%"])
+    end
   end
 
   private

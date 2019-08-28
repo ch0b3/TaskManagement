@@ -5,6 +5,9 @@ h1 タスク一覧
     .form-group
       = f.label "名称"
       = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label "ステータス"
+      = f.collection_select :status_id, @statuses, :id, :name, include_blank: '選択されていません', class: 'form-control'
 
     = f.submit "検索", class: 'btn btn-outline-primary'
 
