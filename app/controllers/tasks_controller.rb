@@ -26,6 +26,7 @@ class TasksController < ApplicationController
   def edit
     @task = Task.find(params[:id])
     @priorities = Priority.all
+    @statuses = Status.all
   end
 
   def update
@@ -47,7 +48,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:name,:description,:priority_id,:deadline)
+    params.require(:task).permit(:name,:description,:priority_id,:deadline, :status)
   end
 
 end
