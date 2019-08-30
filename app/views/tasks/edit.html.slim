@@ -21,5 +21,5 @@ h1 タスクの編集
     .form-group
       = f.label :status
       = f.collection_select :status, @statuses, :id, :name
-
+      
     = f.submit "更新", class: 'btn btn-primary'

@@ -12,4 +12,5 @@ class Task < ApplicationRecord
     self.status = 3 if self.status.blank?
   end
 
+
 end
