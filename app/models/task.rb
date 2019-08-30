@@ -11,6 +11,4 @@ class Task < ApplicationRecord
   def set_default_status
     self.status = 3 if self.status.blank?
   end
-
-
 end
