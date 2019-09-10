@@ -19,7 +19,7 @@ table.table.table-hover
       td= @task.priority.value
     tr
       th= Task.human_attribute_name(:status)
-      td= @task.status
+      td= @task.status_table.name
     tr
       th= Task.human_attribute_name(:created_at)
       td= @task.created_at
