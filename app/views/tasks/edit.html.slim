@@ -11,7 +11,6 @@ h1 タスクの編集
 
   = form_with model: @task, local: true do |f|
     .form-group
-
       = f.label :name
       = f.text_field :name, class: 'form-control', id: 'task_name'
     .form-group
@@ -26,5 +25,4 @@ h1 タスクの編集
     .form-group
       = f.label :status
       = f.collection_select :status, @statuses, :id, :name
-
     = f.submit "更新", class: 'btn btn-primary'
