@@ -14,7 +14,7 @@ class Task < ApplicationRecord
   private
 
   def not_before_today
-    errors.add(:deadline, 'が正しくありません') if deadline < Date.today
+    errors.add(:deadline, 'が今日よりも前になっています') if deadline < Date.today
   end
 
   def set_default_status
