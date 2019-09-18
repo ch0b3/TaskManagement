@@ -4,6 +4,11 @@ h1 タスクの編集
  = link_to '一覧', tasks_path, class: 'nav-link'
 
 .container
+  -if @task.errors.present?
+    ul#error_explanation
+      - @task.errors.full_messages.each do |message|
+        li = message
+
   = form_with model: @task, local: true do |f|
     .form-group
       = f.label :name
@@ -17,5 +22,7 @@ h1 タスクの編集
     .form-group
       = f.label :deadline
       = f.date_select :deadline, id: 'task_deadline'
-
+    .form-group
+      = f.label :status
+      = f.collection_select :status, @statuses, :id, :name
     = f.submit "更新", class: 'btn btn-primary'
