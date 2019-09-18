@@ -1,4 +1,7 @@
 class TasksController < ApplicationController
+
+  before_action :set_properties, {only: [:create, :edit, :update]}
+
   def index
     @tasks = Task.joins(:priority, :status_table).includes(:priority, :status_table).order(created_at: :desc)
   end
@@ -25,8 +28,6 @@ class TasksController < ApplicationController
 
   def edit
     @task = Task.find(params[:id])
-    @priorities = Priority.all
-    @statuses = Status.all
   end
 
   def update
@@ -46,6 +47,11 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def set_properties
+    @priorities = Priority.all
+    @statuses = Status.all
+  end
 
   def task_params
     params.require(:task).permit(:name,:description,:priority_id,:deadline, :status)
