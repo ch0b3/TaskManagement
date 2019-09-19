@@ -2,7 +2,7 @@
 
 
 ## Model diagram
- ![モデル図](https://github.com/takashi-5/TaskManagement/blob/images/docs/IMG_1742.JPG "サンプル")
+ ![モデル図](https://github.com/takashi-5/TaskManagement/blob/model-diagram/docs/model-diagram.jpeg)
 
 ## Deploy infomation
 ### herokuを使用したデプロイ
