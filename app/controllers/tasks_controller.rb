@@ -4,10 +4,12 @@ class TasksController < ApplicationController
 
   def index
 
+    @tasks = Task.joins(:priority, :status_table).includes(:priority, :status_table)
+
     if params[:sort_column].present? && params[:sort_direction].present?
-      @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(params[:sort_column] + ' ' + params[:sort_direction])
+      @tasks = @tasks.order(params[:sort_column] + ' ' + params[:sort_direction])
     else
-      @tasks = Task.joins(:priority, :status_id).includes(:priority, :status_id).order(created_at: :desc)
+      @tasks = @tasks.order(created_at: :desc)
     end
 
   end
