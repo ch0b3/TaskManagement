@@ -3,7 +3,15 @@ class TasksController < ApplicationController
   before_action :set_properties, {only: [:create, :edit, :update]}
 
   def index
-    @tasks = Task.joins(:priority, :status_table).includes(:priority, :status_table).order(created_at: :desc)
+
+    @tasks = Task.joins(:priority, :status_table).includes(:priority, :status_table)
+
+    if params[:sort_column].present? && params[:sort_direction].present?
+      @tasks = @tasks.order(params[:sort_column] + ' ' + params[:sort_direction])
+    else
+      @tasks = @tasks.order(created_at: :desc)
+    end
+
   end
 
   def new
