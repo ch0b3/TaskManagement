@@ -11,6 +11,16 @@ class Task < ApplicationRecord
 
   before_validation :set_default_status
 
+  def search(name, status_id, tasks)
+    if name.present? && status_id.present?
+      tasks.where(['tasks.name LIKE ?', "%#{name}%"]).where(status: status_id)
+    elsif name.blank?
+      tasks.where(status: status_id)
+    elsif status_id.blank?
+      tasks.where(['tasks.name LIKE ?', "%#{name}%"])
+    end
+  end
+
   private
 
   def not_before_today

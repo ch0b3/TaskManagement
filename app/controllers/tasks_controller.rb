@@ -3,6 +3,7 @@ class TasksController < ApplicationController
   before_action :set_properties, {only: [:create, :edit, :update]}
 
   def index
+    @statuses = Status.all
 
     @tasks = Task.joins(:priority, :status_table).includes(:priority, :status_table)
 
@@ -10,6 +11,10 @@ class TasksController < ApplicationController
       @tasks = @tasks.order(params[:sort_column] + ' ' + params[:sort_direction])
     else
       @tasks = @tasks.order(created_at: :desc)
+    end
+
+    if params[:name] || params[:status_id]
+      @tasks = @tasks.search(params[:name], params[:status_id], @tasks)
     end
 
   end
