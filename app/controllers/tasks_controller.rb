@@ -6,7 +6,7 @@ class TasksController < ApplicationController
 
     @tasks = Task.joins(:priority, :status_table).includes(:priority, :status_table)
 
-    if params[:sort_column].present? && params[:sort_direction].present?
+    if sort_column && sort_direction
       @tasks = @tasks.order(params[:sort_column] + ' ' + params[:sort_direction])
     else
       @tasks = @tasks.order(created_at: :desc)
@@ -63,6 +63,14 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:name,:description,:priority_id,:deadline, :status)
+  end
+
+  def sort_column
+    %W[deadline priority_id].include?(params[:sort_column])
+  end
+
+  def sort_direction
+    %W[asc desc].include?(params[:sort_direction])
   end
 
 end
