@@ -7,14 +7,14 @@ class TasksController < ApplicationController
 
     @tasks = Task.joins(:priority, :status_table).includes(:priority, :status_table)
 
+    if params[:name].present? || params[:status_table].present?
+      @tasks = Task.search(params[:name], params[:status_table]).order(created_at: :desc)
+    end
+
     if sort_column && sort_direction
       @tasks = @tasks.order(params[:sort_column] + ' ' + params[:sort_direction])
     else
       @tasks = @tasks.order(created_at: :desc)
-    end
-
-    if params[:name] || params[:status_id]
-      @tasks = @tasks.search(params[:name], params[:status_id], @tasks)
     end
 
   end

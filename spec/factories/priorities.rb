@@ -1,8 +1,5 @@
 FactoryBot.define do
   factory :priority do
-<<<<<<< HEAD
-    
-=======
     value do "MyString" end
   end
 
@@ -19,6 +16,5 @@ FactoryBot.define do
   factory :priority_low, class: Priority do
     id do 3 end
     name do "低" end
->>>>>>> 4290583e5e5dfd909bd58a41e2de5e31ff249c30
   end
 end
