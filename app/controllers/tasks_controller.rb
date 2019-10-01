@@ -7,11 +7,12 @@ class TasksController < ApplicationController
 
     @tasks = Task.joins(:priority, :status_table).includes(:priority, :status_table)
 
-    if params[:name].present? || params[:status_table].present?
-      @tasks = Task.search(params[:name], params[:status_table]).order(created_at: :desc)
+    if params[:search].present?
+      @search_form = SearchTasks.new(search_params)
+      @tasks = @search_form.search
     end
 
-    if sort_column && sort_direction
+    if sort_column.present? && sort_direction.present?
       @tasks = @tasks.order(params[:sort_column] + ' ' + params[:sort_direction])
     else
       @tasks = @tasks.order(created_at: :desc)
@@ -67,7 +68,11 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name,:description,:priority_id,:deadline, :status)
+    params.require(:task).permit(:name, :description, :priority_id, :deadline, :status)
+  end
+
+  def search_params
+    params.require(:search).permit(:name, :status)
   end
 
   def sort_column

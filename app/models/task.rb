@@ -11,15 +11,18 @@ class Task < ApplicationRecord
 
   before_validation :set_default_status
 
-  def self.search(name, status_table)
-    if name.present? && status_table.present?
-      Task.joins(:priority, :status_table).includes(:priority, :status_table).where(['tasks.name LIKE ?', "%#{name}%"]).where(status: status_table)
-    elsif name.blank?
-      Task.joins(:priority, :status_table).includes(:priority, :status_table).where(status: status_table)
-    elsif status_table.blank?
-      Task.joins(:priority, :status_table).includes(:priority, :status_table).where(['tasks.name LIKE ?', "%#{name}%"])
-    end
-  end
+  # def self.search(name, status)
+  #   if name.present? && status.present?
+  #     Task.joins(:priority, :status_table).includes(:priority, :status_table).where(['tasks.name LIKE ?', "%#{name}%"]).where(status: status)
+  #   elsif name.blank?
+  #     Task.joins(:priority, :status_table).includes(:priority, :status_table).where(status: status)
+  #   elsif status.blank?
+  #     Task.joins(:priority, :status_table).includes(:priority, :status_table).where(['tasks.name LIKE ?', "%#{name}%"])
+  #   end
+  # end
+  scope :joins_includes, -> { joins(:priority, :status_table).includes(:priority, :status_table) }
+  scope :search_name, ->(name) { where(['tasks.name LIKE ?', "%#{name}%"]) }
+  scope :search_status, ->(status) { where(status: status) }
 
   private
 
