@@ -1,5 +1,6 @@
 class Task < ApplicationRecord
   belongs_to :priority
+  belongs_to :user
   belongs_to :status_table, :class_name => "Status", foreign_key: "status"
 
   validates :name, presence: true, length: { maximum: 30 }
