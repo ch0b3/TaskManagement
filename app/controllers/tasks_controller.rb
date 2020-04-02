@@ -7,7 +7,7 @@ class TasksController < ApplicationController
     @tasks = Task.joins(:priority, :status_table).includes(:priority, :status_table)
 
     if sort_column && sort_direction
-      @tasks = @tasks.order(params[:sort_column] + ' ' + params[:sort_direction])
+      @tasks = @tasks.order(params[:sort_column].to_sym => params[:sort_direction])
     else
       @tasks = @tasks.order(created_at: :desc)
     end
