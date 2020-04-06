@@ -11,15 +11,40 @@ RSpec.describe User, type: :model do
       }
     }
     context "with valid params" do
-      where(:name, :email, :password) do
-        [
-          ['name', 'email@gmail.com', 'password']
-        ]
+      context "with standard params" do
+        where(:name, :email, :password) do
+          [
+            ['name', 'email@gmail.com', 'password']
+          ]
+        end
+        with_them do
+          it { is_expected.to be_valid }
+        end
       end
-      with_them do
-        it { is_expected.to be_valid }
+
+      context "name has 30 characters" do
+        where(:name, :email, :password) do
+          [
+            [SecureRandom.alphanumeric(30), 'email@gmail.com', 'password']
+          ]
+        end
+        with_them do
+          it { is_expected.to be_valid }
+        end
+      end
+
+      context "email has 40 characters" do
+        where(:name, :email, :password) do
+          [
+            ['name', SecureRandom.alphanumeric(40), 'password']
+          ]
+        end
+        with_them do
+          it { is_expected.to be_valid }
+        end
       end
     end
+
     context "with invalid params" do
       context "with empty params" do
         where(:name, :email, :password) do
@@ -33,7 +58,8 @@ RSpec.describe User, type: :model do
           it { is_expected.to be_invalid }
         end
       end
-      context "password is less than 7 characters" do
+
+      context "password is less than 8 characters" do
         where(:name, :email, :password) do
           [
             ['name','email@gmail.com','a']
@@ -43,16 +69,39 @@ RSpec.describe User, type: :model do
           it { is_expected.to be_invalid }
         end
       end
-      context "name or email has too many characters" do
+
+      context "name has 31 characters" do
         where(:name, :email, :password) do
           [
-            ['123456789123456789123456789123456789', 'email@gmail.com', 'password'],
-            ['name', '123456789123456789123456789123456789123456789', 'password']
+            [SecureRandom.alphanumeric(31), 'email@gmail.com', 'password'],
           ]
         end
         with_them do
           it { is_expected.to be_invalid }
         end
+      end
+
+      context "email has 41 characters" do
+        where(:name, :email, :password) do
+          [
+            ['name', SecureRandom.alphanumeric(41), 'password']
+          ]
+        end
+        with_them do
+          it { is_expected.to be_invalid }
+        end
+      end
+
+      context "email already exist" do
+        let(:name) { "name" }
+        let(:email) { "email@gmail.com" }
+        let(:password) { "password" }
+
+        before do
+          FactoryBot.create(:user, email: email)
+        end
+
+        it { is_expected.to be_invalid }
       end
     end
   end
