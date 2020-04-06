@@ -50,4 +50,7 @@ class Admin::UsersController < ApplicationController
     params.require(:user).permit(:name, :email, :password, :admin)
   end
 
+  def admin_user
+    raise Forbidden unless current_user.admin?
+  end
 end
