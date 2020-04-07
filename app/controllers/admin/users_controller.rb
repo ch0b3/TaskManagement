@@ -22,6 +22,7 @@ class Admin::UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @tasks = @user.tasks.joins(:priority, :status_table).preload(:priority, :status_table)
   end
 
   def edit
