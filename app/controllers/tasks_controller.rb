@@ -33,11 +33,11 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = current_user.tasks.find(params[:id])
+    @task = task_find
   end
 
   def update
-    @task = current_user.tasks.find(params[:id])
+    @task = task_find
 
     if @task.update(task_params)
       redirect_to tasks_path, notice: "タスク「#{@task.name}」を更新しました。"
@@ -47,7 +47,7 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task = current_user.tasks.find(params[:id])
+    @task = task_find
     @task.destroy
     redirect_to tasks_path, notice: "タスク#{@task.name}を削除しました"
   end
@@ -71,4 +71,7 @@ class TasksController < ApplicationController
     %W[asc desc].include?(params[:sort_direction])
   end
 
+  def task_find
+    current_user.tasks.find(params[:id])
+  end
 end
