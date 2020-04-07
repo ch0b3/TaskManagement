@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_action :set_properties, {only: [:create, :edit, :update]}
 
   def index
-    @tasks = current_user.tasks.joins(:priority, :status_table).includes(:priority, :status_table)
+    @tasks = current_user.tasks.joins(:priority, :status_table).preload(:priority, :status_table)
 
     if sort_column && sort_direction
       @tasks = @tasks.order(params[:sort_column].to_sym => params[:sort_direction].to_sym)
@@ -33,11 +33,11 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = current_user.tasks.find(params[:id])
+    @task = find_task_of_current_user
   end
 
   def update
-    @task = current_user.tasks.find(params[:id])
+    @task = find_task_of_current_user
 
     if @task.update(task_params)
       redirect_to tasks_path, notice: "タスク「#{@task.name}」を更新しました。"
@@ -47,7 +47,7 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task = current_user.tasks.find(params[:id])
+    @task = find_task_of_current_user
     @task.destroy
     redirect_to tasks_path, notice: "タスク#{@task.name}を削除しました"
   end
@@ -71,4 +71,7 @@ class TasksController < ApplicationController
     %W[asc desc].include?(params[:sort_direction])
   end
 
+  def find_task_of_current_user
+    current_user.tasks.find(params[:id])
+  end
 end
