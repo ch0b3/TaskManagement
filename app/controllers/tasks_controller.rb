@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_action :set_properties, {only: [:create, :edit, :update]}
 
   def index
-    @tasks = current_user.tasks.joins(:priority, :status_table).includes(:priority, :status_table)
+    @tasks = current_user.tasks.joins(:priority, :status_table).preload(:priority, :status_table)
 
     if sort_column && sort_direction
       @tasks = @tasks.order(params[:sort_column].to_sym => params[:sort_direction].to_sym)
