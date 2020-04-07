@@ -10,38 +10,15 @@ RSpec.describe User, type: :model do
         password: password
       }
     }
+    
     context "with valid params" do
-      context "with standard params" do
-        where(:name, :email, :password) do
-          [
-            ['name', 'email@gmail.com', 'password']
-          ]
-        end
-        with_them do
-          it { is_expected.to be_valid }
-        end
+      where(:name, :email, :password) do
+        [
+          [SecureRandom.alphanumeric(30), SecureRandom.alphanumeric(40), SecureRandom.alphanumeric(8)]
+        ]
       end
-
-      context "name has 30 characters" do
-        where(:name, :email, :password) do
-          [
-            [SecureRandom.alphanumeric(30), 'email@gmail.com', 'password']
-          ]
-        end
-        with_them do
-          it { is_expected.to be_valid }
-        end
-      end
-
-      context "email has 40 characters" do
-        where(:name, :email, :password) do
-          [
-            ['name', SecureRandom.alphanumeric(40), 'password']
-          ]
-        end
-        with_them do
-          it { is_expected.to be_valid }
-        end
+      with_them do
+        it { is_expected.to be_valid }
       end
     end
 
@@ -62,7 +39,7 @@ RSpec.describe User, type: :model do
       context "password is less than 8 characters" do
         where(:name, :email, :password) do
           [
-            ['name','email@gmail.com','a']
+            ['name','email@gmail.com', SecureRandom.alphanumeric(7)]
           ]
         end
         with_them do
