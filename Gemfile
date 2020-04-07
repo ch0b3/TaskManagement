@@ -57,6 +57,7 @@ group :development do
 end
 
 group :test do
+  gem 'rspec-parameterized'
   gem 'selenium-webdriver'
   gem 'capybara'
 end
