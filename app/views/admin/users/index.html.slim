@@ -10,6 +10,7 @@ table.table.table-striped
       th= "ユーザーID"
       th= "名前"
       th= "メールアドレス"
+      th= "タスクの数"
       th= "管理者権限"
       th
 
@@ -20,5 +21,6 @@ table.table.table-striped
         td= user.id
         td= user.name
         td= user.email
+        td= link_to user.tasks.size, admin_user_path(user)
         td= user.admin
         td= link_to '削除', admin_user_path(user), method: :delete, data: { confirm: "タスク「#{user.name}」を削除してよろしいですか？" }, class: 'btn btn-danger'
