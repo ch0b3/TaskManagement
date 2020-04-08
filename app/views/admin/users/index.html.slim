@@ -1,0 +1,26 @@
+h1 ユーザ一覧
+
+=link_to "新規ユーザー登録", new_admin_user_path, class: "btn btn-primary"
+
+.mb-3
+table.table.table-striped
+  thead.thead-default
+    tr
+      th
+      th= "ユーザーID"
+      th= "名前"
+      th= "メールアドレス"
+      th= "タスクの数"
+      th= "管理者権限"
+      th
+
+  tbody
+    -@users.each do |user|
+      tr
+        th= link_to '編集', edit_admin_user_path(user), class:'btn btn-primary mr-3'
+        td= user.id
+        td= user.name
+        td= user.email
+        td= link_to user.tasks.size, admin_user_path(user)
+        td= user.admin
+        td= link_to '削除', admin_user_path(user), method: :delete, data: { confirm: "タスク「#{user.name}」を削除してよろしいですか？" }, class: 'btn btn-danger'

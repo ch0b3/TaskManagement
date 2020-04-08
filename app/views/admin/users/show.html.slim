@@ -1,0 +1,24 @@
+h1= "#{@user.name}のタスク一覧"
+
+=link_to "ユーザ一覧", admin_users_path, class: 'btn btn-primary'
+
+.mb-3
+table.table.table-striped
+  thead.thead-default
+    tr
+      th
+      th= Task.human_attribute_name(:name)
+      th= Task.human_attribute_name(:deadline)
+      th= Task.human_attribute_name(:priority)
+      th= Task.human_attribute_name(:status)
+      th
+
+  tbody
+    - @tasks.each do |task|
+      tr
+        th=
+        td= task.name
+        td= task.deadline
+        td= task.priority.value
+        td= task.status_table.name
+        td=

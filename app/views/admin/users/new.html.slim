@@ -1,0 +1,28 @@
+.container
+  h1 新規ユーザー作成
+
+  .nav.justify-content-end
+    = link_to '一覧', admin_users_path, class: 'nav-link'
+
+  .container
+    -if @user.errors.present?
+        ul#error_explanation
+          - @user.errors.full_messages.each do |message|
+            li = message
+
+  = form_with model: @user, url: admin_users_path, local: true do |f|
+    .form-group
+      = f.label :name
+      = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :email
+      = f.text_field :email, class: 'form-control'
+    .form-group
+      = f.label :password
+      = f.password_field :password, class: 'form-control'
+    .form-group
+      = f.radio_button :admin, true
+      = f.label :admin, "管理者"
+      = f.radio_button :admin, false
+      = f.label :admin, "非管理者"
+    = f.submit "作成", class: 'btn btn-primary'

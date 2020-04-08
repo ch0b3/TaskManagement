@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  class Forbidden < ActionController::ActionControllerError; end
+  include ErrorHandlers
+
   helper_method :current_user
   before_action :login_required
 
