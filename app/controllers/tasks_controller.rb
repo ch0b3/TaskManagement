@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
 
-  before_action :set_properties, {only: [:create, :edit, :update]}
+  before_action :set_properties, {only: [:new, :create, :edit, :update]}
 
   def index
     @tasks = current_user.tasks.joins(:priority, :status_table, :labels).eager_load(:priority, :status_table, :labels)
@@ -14,7 +14,6 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
-    @priorities = Priority.all
   end
 
   def create
@@ -57,10 +56,11 @@ class TasksController < ApplicationController
   def set_properties
     @priorities = Priority.all
     @statuses = Status.all
+    @labels = Label.all
   end
 
   def task_params
-    params.require(:task).permit(:name,:description,:priority_id,:deadline, :status)
+    params.require(:task).permit(:name,:description,:priority_id,:deadline, :status, { label_ids: [] })
   end
 
   def sort_column
