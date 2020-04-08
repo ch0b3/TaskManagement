@@ -2,6 +2,11 @@ h1 タスク一覧
 
 =link_to "新規登録", new_task_path, class: "btn btn-primary"
 
+h2 ラベルで検索
+= form_with url: tasks_path, method: :get, local: true do |f|
+  = f.select :label_id, @labels, { include_blank: true }
+  = f.submit "検索"
+
 .mb-3
 table.table.table-striped
   thead.thead-default
