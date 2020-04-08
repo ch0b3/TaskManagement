@@ -12,8 +12,7 @@ class User < ApplicationRecord
   private
 
   def check_admin_user_exist
-    if self.admin?
-      throw :abort if User.where(admin: true).count == 1
-    end
+    return unless self.admin?
+    throw :abort if User.where(admin: true).size == 1
   end
 end
