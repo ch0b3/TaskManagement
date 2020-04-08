@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user
-  before_action :login_required
-
   class Forbidden < ActionController::ActionControllerError; end
   include ErrorHandlers
+
+  helper_method :current_user
+  before_action :login_required
 
   private
 
