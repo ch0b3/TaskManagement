@@ -19,6 +19,7 @@ ja:
         deadline: 期限
         priority: 優先順位
         status: ステータス
+        label: ラベル
   date:
     abbr_day_names:
     - 日
