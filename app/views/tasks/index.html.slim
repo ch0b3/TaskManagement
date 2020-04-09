@@ -4,7 +4,7 @@ h1 タスク一覧
 
 h2 ラベルで検索
 = form_with url: tasks_path, method: :get, local: true do |f|
-  = f.select :label_id, @labels, { include_blank: true }
+  = f.collection_select :label_id, @labels, :id, :name, { include_blank: true }
   = f.submit "検索"
 
 .mb-3
