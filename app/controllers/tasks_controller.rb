@@ -3,7 +3,9 @@ class TasksController < ApplicationController
   before_action :set_properties, {only: [:index, :new, :create, :edit, :update]}
 
   def index
-    @tasks = current_user.tasks.joins(:priority, :status_table, :labels).eager_load(:priority, :status_table, :labels)
+    @tasks = current_user.tasks.joins(:priority, :status_table)
+                                .preload(:priority, :status_table)
+                                .eager_load( :labels)
     @tasks = @tasks.where(labels: { id: params[:label_id] }) if params[:label_id].present?
 
     if sort_column && sort_direction
