@@ -4,8 +4,8 @@ class TasksController < ApplicationController
 
   def index
     @tasks = current_user.tasks.joins(:priority, :status_table)
-                                .preload(:priority, :status_table)
-                                .eager_load( :labels)
+                               .preload(:priority, :status_table)
+                               .eager_load( :labels)
     @tasks = @tasks.where(labels: { id: params[:label_id] }) if params[:label_id].present?
 
     if sort_column && sort_direction
