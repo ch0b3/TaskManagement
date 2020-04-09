@@ -2,6 +2,11 @@ h1 タスク一覧
 
 =link_to "新規登録", new_task_path, class: "btn btn-primary"
 
+h2 ラベルで検索
+= form_with url: tasks_path, method: :get, local: true do |f|
+  = f.collection_select :label_id, @labels, :id, :name, { include_blank: true }
+  = f.submit "検索"
+
 .mb-3
 table.table.table-striped
   thead.thead-default
@@ -11,6 +16,7 @@ table.table.table-striped
       th== Task.human_attribute_name(:deadline) + sort_desc("deadline") + sort_asc("deadline")
       th== Task.human_attribute_name(:priority) + sort_desc("priority_id") + sort_asc("priority_id")
       th= Task.human_attribute_name(:status)
+      th= Task.human_attribute_name(:label)
       th
 
   tbody
@@ -21,4 +27,7 @@ table.table.table-striped
         td= task.deadline
         td= task.priority.value
         td= task.status_table.name
+        td
+          - task.labels.each do |label|
+            = label.name
         td= link_to '削除', task_path(task), method: :delete, data: { confirm: "タスク「#{task.name}」を削除してよろしいですか？" }, class: 'btn btn-danger'

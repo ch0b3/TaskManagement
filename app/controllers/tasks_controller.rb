@@ -1,9 +1,12 @@
 class TasksController < ApplicationController
 
-  before_action :set_properties, {only: [:create, :edit, :update]}
+  before_action :set_properties, {only: [:index, :new, :create, :edit, :update]}
 
   def index
-    @tasks = current_user.tasks.joins(:priority, :status_table).preload(:priority, :status_table)
+    @tasks = current_user.tasks.joins(:priority, :status_table)
+                               .preload(:priority, :status_table)
+                               .eager_load( :labels)
+    @tasks = @tasks.where(labels: { id: params[:label_id] }) if params[:label_id].present?
 
     if sort_column && sort_direction
       @tasks = @tasks.order(params[:sort_column].to_sym => params[:sort_direction].to_sym)
@@ -14,7 +17,6 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
-    @priorities = Priority.all
   end
 
   def create
@@ -57,10 +59,11 @@ class TasksController < ApplicationController
   def set_properties
     @priorities = Priority.all
     @statuses = Status.all
+    @labels = Label.all
   end
 
   def task_params
-    params.require(:task).permit(:name,:description,:priority_id,:deadline, :status)
+    params.require(:task).permit(:name,:description,:priority_id,:deadline, :status, { label_ids: [] })
   end
 
   def sort_column

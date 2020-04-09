@@ -1,4 +1,6 @@
 class Task < ApplicationRecord
+  has_many :label_tasks, dependent: :destroy
+  has_many :labels, through: :label_tasks
   belongs_to :priority
   belongs_to :user
   belongs_to :status_table, :class_name => "Status", foreign_key: "status"
