@@ -6,6 +6,15 @@ jobs:
   build:
     docker:
       - image: circleci/ruby:2.6.2-stretch-node
+        environment:
+          RAILS_ENV: test
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          PG_DATABASE: postgres
+          PG_PASSWORD: pass
+          PG_USER: postgres
+          SELENIUM_DRIVER_URL: http://selenium_chrome:4444/wd/hub
     executor: ruby/default
     steps:
       - checkout
