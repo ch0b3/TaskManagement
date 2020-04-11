@@ -14,6 +14,7 @@ jobs:
           PG_DATABASE: postgres
           PG_PASSWORD: pass
           PG_USER: postgres
+          PG_HOST: postgres
           SELENIUM_DRIVER_URL: http://selenium_chrome:4444/wd/hub
       - image: circleci/postgres:9.6-postgis-ram
         environment:
