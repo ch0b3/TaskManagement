@@ -33,7 +33,7 @@ jobs:
       - run:
           name: Create db
           command: bundle exec rake db:create
-      # - run:
-      #     name: Database setup
-      #     command: bundle exec rake db:schema:load --trace
+      - run:
+          name: Database setup
+          command: bundle exec rake db:schema:load --trace
 
