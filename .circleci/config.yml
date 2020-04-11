@@ -27,6 +27,7 @@ jobs:
           command: bundle -v
       - ruby/bundle-install
       - run:
-        name: Database setup
-        command: bundle exec rake db:schema:load --trace
+          name: Database setup
+          command: bundle exec rake db:create
+          command: bundle exec rake db:schema:load --trace
 
