@@ -17,6 +17,7 @@ AllCops:
     - 'config/**/*'
     - 'script/**/*'
     - !ruby/regexp /old_and_unused\.rb$/
+
 Lint/RaiseException:
   Enabled: false
 
@@ -57,7 +58,7 @@ Metrics/ClassLength:
 Metrics/ModuleLength:
   Max: 200
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 250
   AllowHeredoc: true
   AllowURI: true
