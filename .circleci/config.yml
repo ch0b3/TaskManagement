@@ -45,6 +45,9 @@ jobs:
           name: Database setup
           command: bundle exec rake db:schema:load --trace
       - run:
+          name: Run rubocop
+          command: bundle exec rubocop
+      - run:
           name: Run RSpec
           command: |
             bundle exec rspec --profile 10 \
