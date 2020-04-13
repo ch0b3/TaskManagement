@@ -1,18 +1,17 @@
 class TasksController < ApplicationController
-
-  before_action :set_properties, {only: [:index, :new, :create, :edit, :update]}
+  before_action :set_properties, { only: %i[index new create edit update] }
 
   def index
     @tasks = current_user.tasks.joins(:priority, :status_table)
-                               .preload(:priority, :status_table)
-                               .eager_load( :labels)
+                         .preload(:priority, :status_table)
+                         .eager_load(:labels)
     @tasks = @tasks.where(labels: { id: params[:label_id] }) if params[:label_id].present?
 
-    if sort_column && sort_direction
-      @tasks = @tasks.order(params[:sort_column].to_sym => params[:sort_direction].to_sym)
-    else
-      @tasks = @tasks.order(created_at: :desc)
-    end
+    @tasks = if sort_column && sort_direction
+               @tasks.order(params[:sort_column].to_sym => params[:sort_direction].to_sym)
+             else
+               @tasks.order(created_at: :desc)
+             end
   end
 
   def new
@@ -25,9 +24,8 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to tasks_path, notice: "タスク「#{@task.name}」を作成しました"
     else
-      render :action => "new"
+      render action: 'new'
     end
-
   end
 
   def show
@@ -44,7 +42,7 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       redirect_to tasks_path, notice: "タスク「#{@task.name}」を更新しました。"
     else
-      render :action => "edit"
+      render action: 'edit'
     end
   end
 
@@ -63,15 +61,15 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name,:description,:priority_id,:deadline, :status, { label_ids: [] })
+    params.require(:task).permit(:name, :description, :priority_id, :deadline, :status, { label_ids: [] })
   end
 
   def sort_column
-    %W[deadline priority_id].include?(params[:sort_column])
+    %w[deadline priority_id].include?(params[:sort_column])
   end
 
   def sort_direction
-    %W[asc desc].include?(params[:sort_direction])
+    %w[asc desc].include?(params[:sort_direction])
   end
 
   def find_task_of_current_user

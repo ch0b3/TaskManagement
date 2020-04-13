@@ -15,9 +15,8 @@ class Admin::UsersController < ApplicationController
     if @user.save!
       redirect_to admin_users_path, notice: "ユーザー:「#{@user.name}」を作成しました"
     else
-      render :action => "new"
+      render action: 'new'
     end
-
   end
 
   def show
@@ -35,7 +34,7 @@ class Admin::UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to admin_users_path, notice: "ユーザー:「#{@user.name}」を更新しました。"
     else
-      render :action => "edit"
+      render action: 'edit'
     end
   end
 
@@ -44,7 +43,7 @@ class Admin::UsersController < ApplicationController
     if @user.destroy
       redirect_to admin_users_path, notice: "ユーザー:#{@user.name}を削除しました"
     else
-      flash[:danger] = "管理者が1人しかいないため削除できません"
+      flash[:danger] = '管理者が1人しかいないため削除できません'
       redirect_to admin_users_path
     end
   end
