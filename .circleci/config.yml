@@ -1,5 +1,4 @@
 version: 2.1
-orbs:
 
 jobs:
   build:
@@ -29,7 +28,9 @@ jobs:
           keys:
             - task-management-bundle-v2-{{ checksum "Gemfile.lock" }}
             - task-management-bundle-v2-
-      - ruby/bundle-install
+      - run:
+          name: Bundle install
+          command: bundle install --jobs=3 --retry=3 --path vendor/bundle
       - save_cache:
           key: task-management-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
