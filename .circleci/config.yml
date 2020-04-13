@@ -61,12 +61,15 @@ jobs:
           path: test_results
 
   deploy:
-    jobs:
+    docker:
+      - image: circleci/ruby:2.6.2-stretch-node
+    steps:
       - aws-ecr/build-and-push-image:
           account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
           aws-access-key-id: ${AWS_ACCESS_KEY_ID}
           aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY}
           create-repo: true
+          dockerfile: Dockerfile
           region: ${AWS_DEFAULT_REGION}
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: 'latest,TaskManagementTag'
