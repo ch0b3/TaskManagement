@@ -3,7 +3,7 @@ class Task < ApplicationRecord
   has_many :labels, through: :label_tasks
   belongs_to :priority
   belongs_to :user
-  belongs_to :status_table, :class_name => "Status", foreign_key: "status"
+  belongs_to :status_table, class_name: 'Status', foreign_key: 'status'
 
   validates :name, presence: true, length: { maximum: 30 }
   validates :description, presence: true, length: { maximum: 100 }
@@ -21,6 +21,6 @@ class Task < ApplicationRecord
   end
 
   def set_default_status
-    self.status = 3 if self.status.blank?
+    self.status = 3 if status.blank?
   end
 end
