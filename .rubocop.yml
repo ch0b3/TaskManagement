@@ -17,6 +17,20 @@ AllCops:
     - 'config/**/*'
     - 'script/**/*'
     - !ruby/regexp /old_and_unused\.rb$/
+Lint/RaiseException:
+  Enabled: false
+
+Lint/StructNewOverride:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: false
+
+Style/HashTransformKeys:
+  Enabled: false
+
+Style/HashTransformValues:
+  Enabled: false
 
 # 日本語でのコメントを許可
 AsciiComments:
