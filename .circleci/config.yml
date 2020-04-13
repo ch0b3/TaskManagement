@@ -21,6 +21,7 @@ jobs:
           POSTGRES_PASSWORD: pass
           POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
     executor: ruby/default
+    parallelism: 3
     steps:
       - checkout
       - run:
