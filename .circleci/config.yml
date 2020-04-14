@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.8.1
-  aws-ecs: circleci/aws-ecs@1.1.0
+  aws-ecs: circleci/aws-ecs@0.0.10
 
 jobs:
   build:
@@ -61,7 +61,7 @@ jobs:
       - store_test_results:
           path: test_results
 
-  build-and-deploy:
+  deploy:
     docker:
       - image: circleci/buildpack-deps
     steps:
@@ -83,8 +83,9 @@ jobs:
           container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=latest"
 
 workflows:
-  jobs:
-    - build
-    - build-and-deploy:
-        requires:
-          - build
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
