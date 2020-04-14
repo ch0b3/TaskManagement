@@ -93,8 +93,4 @@ workflows:
     jobs:
       - build
       - build-image
-          requires:
-            - build
       - deploy
-          requires:
-            - build-image
