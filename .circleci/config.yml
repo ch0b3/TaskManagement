@@ -61,7 +61,7 @@ jobs:
       - store_test_results:
           path: test_results
 
-  deploy:
+  build-image:
     docker:
       - image: circleci/buildpack-deps
     steps:
@@ -75,6 +75,11 @@ jobs:
           region: AWS_DEFAULT_REGION
           repo: ${AWS_RESOURCE_NAME_PREFIX}
           setup-remote-docker: true
+  deploy:
+    docker:
+      - image: circleci/buildpack-deps
+    steps:
+      - checkout
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build_and_push_image
@@ -87,6 +92,9 @@ workflows:
   build-and-deploy:
     jobs:
       - build
-      - deploy:
+      - build-image
           requires:
             - build
+      - deploy
+          requires:
+            - build-image
