@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  aws-ecr: circleci/aws-ecr@6.8.0
+  aws-ecr: circleci/aws-ecr@6.8.1
 
 jobs:
   build:
@@ -72,7 +72,6 @@ jobs:
           dockerfile: Dockerfile
           region: AWS_DEFAULT_REGION
           repo: ${AWS_RESOURCE_NAME_PREFIX}
-          setup-remote-docker: true
 
 workflows:
   build-and-deploy:
