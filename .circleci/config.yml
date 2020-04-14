@@ -61,11 +61,37 @@ jobs:
       - store_test_results:
           path: test_results
 
-  build-image:
-    docker:
-      - image: circleci/buildpack-deps
-    steps:
-      - checkout
+  # build-image:
+  #   docker:
+  #     - image: circleci/buildpack-deps
+  #   steps:
+  #     - checkout
+  #     - aws-ecr/build-and-push-image:
+  #         account-url: AWS_ECR_ACCOUNT_URL
+  #         aws-access-key-id: AWS_ACCESS_KEY_ID
+  #         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+  #         create-repo: true
+  #         dockerfile: Dockerfile
+  #         region: AWS_DEFAULT_REGION
+  #         repo: ${AWS_RESOURCE_NAME_PREFIX}
+  #         setup-remote-docker: true
+  # deploy:
+  #   docker:
+  #     - image: circleci/buildpack-deps
+  #   steps:
+  #     - checkout
+  #     - aws-ecs/deploy-service-update:
+  #         requires:
+  #           - aws-ecr/build_and_push_image
+  #         aws-region: ${AWS_DEFAULT_REGION}
+  #         family: "${AWS_RESOURCE_NAME_PREFIX}-service"
+  #         cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
+  #         container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=latest"
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - build
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY_ID
@@ -75,22 +101,10 @@ jobs:
           region: AWS_DEFAULT_REGION
           repo: ${AWS_RESOURCE_NAME_PREFIX}
           setup-remote-docker: true
-  deploy:
-    docker:
-      - image: circleci/buildpack-deps
-    steps:
-      - checkout
       - aws-ecs/deploy-service-update:
-          requires:
-            - aws-ecr/build_and_push_image
-          aws-region: ${AWS_DEFAULT_REGION}
-          family: "${AWS_RESOURCE_NAME_PREFIX}-service"
-          cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
-          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=latest"
-
-workflows:
-  build-and-deploy:
-    jobs:
-      - build
-      - build-image
-      - deploy
+        requires:
+          - aws-ecr/build_and_push_image
+        aws-region: ${AWS_DEFAULT_REGION}
+        family: "${AWS_RESOURCE_NAME_PREFIX}-service"
+        cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
+        container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=latest"
