@@ -72,6 +72,7 @@ jobs:
           dockerfile: Dockerfile
           region: AWS_DEFAULT_REGION
           repo: ${AWS_RESOURCE_NAME_PREFIX}
+          setup-remote-docker: true
 
 workflows:
   build-and-deploy:
