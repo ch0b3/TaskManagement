@@ -102,8 +102,6 @@ workflows:
           repo: ${AWS_RESOURCE_NAME_PREFIX}
           setup-remote-docker: true
       - aws-ecs/deploy-service-update:
-          requires:
-            - aws-ecr/build_and_push_image
           aws-region: ${AWS_DEFAULT_REGION}
           family: "${AWS_RESOURCE_NAME_PREFIX}-service"
           cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
