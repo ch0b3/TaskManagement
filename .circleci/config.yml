@@ -91,7 +91,7 @@ jobs:
 workflows:
   build-and-deploy:
     jobs:
-      # - build
+      - build
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY_ID
@@ -100,8 +100,9 @@ workflows:
           dockerfile: Dockerfile
           region: AWS_DEFAULT_REGION
           repo: ${AWS_RESOURCE_NAME_PREFIX}
-          # setup-remote-docker: true
       - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build_and_push_image
           aws-region: ${AWS_DEFAULT_REGION}
           family: "${AWS_RESOURCE_NAME_PREFIX}-service"
           cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
