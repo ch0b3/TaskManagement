@@ -100,7 +100,7 @@ workflows:
           dockerfile: Dockerfile
           region: AWS_DEFAULT_REGION
           repo: ${AWS_RESOURCE_NAME_PREFIX}
-          setup-remote-docker: true
+          # setup-remote-docker: true
       - aws-ecs/deploy-service-update:
           aws-region: ${AWS_DEFAULT_REGION}
           family: "${AWS_RESOURCE_NAME_PREFIX}-service"
