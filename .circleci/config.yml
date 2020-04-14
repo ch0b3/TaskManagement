@@ -75,7 +75,7 @@ jobs:
           region: AWS_DEFAULT_REGION
           repo: ${AWS_RESOURCE_NAME_PREFIX}
           setup-remote-docker: true
-      - aws-ecs/update-service:
+      - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build_and_push_image
           aws-region: ${AWS_DEFAULT_REGION}
