@@ -61,7 +61,7 @@ jobs:
       - store_test_results:
           path: test_results
 
-  deploy:
+  build-and-deploy:
     docker:
       - image: circleci/buildpack-deps
     steps:
@@ -83,9 +83,8 @@ jobs:
           container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=latest"
 
 workflows:
-  build-and-deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
+  jobs:
+    - build
+    - build-and-deploy:
+        requires:
+          - build
