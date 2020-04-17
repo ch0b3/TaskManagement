@@ -78,8 +78,7 @@ jobs:
             ecs-cli compose \
               --file .circleci/ecs-docker-compose.yml \
               --ecs-params .circleci/ecs-params.yml \
-              --project-name ci-cd-rails-app-service \
-              --cluster-config ci-cd-rails \
+              --cluster-config TaskManagement \
               service stop
             ecs-cli compose \
               --file .circleci/ecs-docker-compose.yml \
