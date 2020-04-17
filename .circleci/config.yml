@@ -71,19 +71,19 @@ jobs:
             sudo chmod +x /usr/local/bin/ecs-cli
             ecs-cli --version
             ecs-cli configure profile --access-key $AWS_ACCESS_KEY_ID --secret-key $AWS_SECRET_ACCESS_KEY
-            ecs-cli configure --cluster task-management --default-launch-type EC2 --region $AWS_DEFAULT_REGION --config-name TaskManagement
+            ecs-cli configure --cluster task-management --default-launch-type EC2 --region $AWS_DEFAULT_REGION --config-name task-management
       - run:
           name: Update service
           command: |
             ecs-cli compose \
               --file .circleci/ecs-docker-compose.yml \
               --ecs-params .circleci/ecs-params.yml \
-              --cluster-config TaskManagement \
+              --cluster-config task-management \
               service stop
             ecs-cli compose \
               --file .circleci/ecs-docker-compose.yml \
               --ecs-params .circleci/ecs-params.yml \
-              --cluster-config TaskManagement \
+              --cluster-config task-management \
               service up
   # build-image:
   #   docker:
