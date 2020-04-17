@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.8.1
-  aws-ecs: circleci/aws-ecs@0.0.10
 
 jobs:
   build:
@@ -61,6 +60,33 @@ jobs:
       - store_test_results:
           path: test_results
 
+  deploy:
+    docker:
+      - image: circleci/buildpack-deps
+    steps:
+      - checkout
+      - run:
+          name: Setup AWS ecs-cli
+          command: |
+            sudo curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest
+            sudo chmod +x /usr/local/bin/ecs-cli
+            ecs-cli --version
+            ecs-cli configure profile default --access-key $AWS_ACCESS_KEY_ID --secret-key $AWS_SECRET_ACCESS_KEY
+            ecs-cli configure --cluster task-management --default-launch-type EC2 --region $AWS_DEFAULT_REGION --config-name TaskManagement
+      - run:
+          name: Update service
+          command: |
+            ecs-cli compose \
+              --file .circleci/ecs-docker-compose.yml \
+              --ecs-params .circleci/ecs-params.yml \
+              --project-name ci-cd-rails-app-service \
+              --cluster-config ci-cd-rails \
+              service stop
+            ecs-cli compose \
+              --file .circleci/ecs-docker-compose.yml \
+              --ecs-params .circleci/ecs-params.yml \
+              --cluster-config TaskManagement \
+              service up
   # build-image:
   #   docker:
   #     - image: circleci/buildpack-deps
@@ -103,11 +129,7 @@ workflows:
           region: AWS_DEFAULT_REGION
           repo: ${AWS_RESOURCE_NAME_PREFIX}
           tag: ${CIRCLE_SHA1}
-      - aws-ecs/deploy-service-update:
+      - deploy:
           requires:
             - aws-ecr/build-and-push-image
-          aws-region: ${AWS_DEFAULT_REGION}
-          service-name: "1"
-          family: "TaskManagement"
-          cluster-name: "task-management"
-          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=${CIRCLE_SHA1}"
+

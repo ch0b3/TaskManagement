@@ -1,0 +1,9 @@
+version: 1
+task_definition:
+  services:
+    app:
+      cpu_shares: 200
+      mem_limit: 268435456
+    # db:
+    #   cpu_shares: 100
+    #   mem_limit: 67108864
