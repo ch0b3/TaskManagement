@@ -3,7 +3,7 @@ orbs:
   aws-ecr: circleci/aws-ecr@6.8.1
 
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/ruby:2.6.2-stretch-node
         environment:
@@ -92,7 +92,7 @@ jobs:
 workflows:
   build-and-deploy:
     jobs:
-      - build
+      - test
       - aws-ecr/build-and-push-image:
           requires:
             - build
@@ -103,6 +103,6 @@ workflows:
           dockerfile: Dockerfile
           region: AWS_DEFAULT_REGION
           repo: ${AWS_RESOURCE_NAME_PREFIX}
-      - deploy
+      - deploy:
           requires:
             - aws-ecr/build-and-push-image
