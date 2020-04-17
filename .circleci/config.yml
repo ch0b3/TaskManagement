@@ -1,6 +1,6 @@
 version: 2.1
-# orbs:
-#   aws-ecr: circleci/aws-ecr@6.8.1
+orbs:
+  aws-ecr: circleci/aws-ecr@6.8.1
 
 jobs:
   build:
@@ -130,5 +130,5 @@ workflows:
       #     repo: ${AWS_RESOURCE_NAME_PREFIX}
       #     tag: ${CIRCLE_SHA1}
       - deploy:
-          requires:
-            - aws-ecr/build-and-push-image
+          # requires:
+          #   - aws-ecr/build-and-push-image
