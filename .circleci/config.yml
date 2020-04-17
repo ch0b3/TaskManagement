@@ -78,13 +78,13 @@ jobs:
             ecs-cli compose \
               --file .circleci/ecs-docker-compose.yml \
               --ecs-params .circleci/ecs-params.yml \
-              --project-name task-management \
+              --project-name TaskManagement \
               --cluster-config task-management \
               service stop
             ecs-cli compose \
               --file .circleci/ecs-docker-compose.yml \
               --ecs-params .circleci/ecs-params.yml \
-              --project-name task-management \
+              --project-name TaskManagement \
               --cluster-config task-management \
               service up
   # build-image:
