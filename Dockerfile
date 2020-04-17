@@ -15,3 +15,4 @@ ADD Gemfile.lock $APP_HOME/Gemfile.lock
 
 ENV BUNDLE_DISABLE_SHARED_GEMS 1
 RUN bundle install -j4
+COPY . /var/src/app

@@ -1,9 +1,9 @@
 version: 2.1
 orbs:
-  ruby: circleci/ruby@0.1.2 
+  aws-ecr: circleci/aws-ecr@6.8.1
 
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/ruby:2.6.2-stretch-node
         environment:
@@ -20,7 +20,6 @@ jobs:
         environment:
           POSTGRES_PASSWORD: pass
           POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
-    executor: ruby/default
     parallelism: 3
     steps:
       - checkout
@@ -31,7 +30,9 @@ jobs:
           keys:
             - task-management-bundle-v2-{{ checksum "Gemfile.lock" }}
             - task-management-bundle-v2-
-      - ruby/bundle-install
+      - run:
+          name: Bundle install
+          command: bundle install --jobs=3 --retry=3 --path vendor/bundle
       - save_cache:
           key: task-management-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
@@ -58,3 +59,56 @@ jobs:
                               $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
       - store_test_results:
           path: test_results
+
+  deploy:
+    docker:
+      - image: circleci/buildpack-deps
+    steps:
+      - checkout
+      - run:
+          name: Setup AWS ecs-cli
+          command: |
+            sudo curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest
+            sudo chmod +x /usr/local/bin/ecs-cli
+            ecs-cli --version
+            ecs-cli configure profile --access-key $AWS_ACCESS_KEY_ID --secret-key $AWS_SECRET_ACCESS_KEY
+            ecs-cli configure --cluster task-management --default-launch-type EC2 --region $AWS_DEFAULT_REGION --config-name task-management
+      - run:
+          name: Update service
+          command: |
+            ecs-cli compose \
+              --file .circleci/ecs-docker-compose.yml \
+              --ecs-params .circleci/ecs-params.yml \
+              --project-name TaskManagement \
+              --cluster-config task-management \
+              service stop
+            ecs-cli compose \
+              --file .circleci/ecs-docker-compose.yml \
+              --ecs-params .circleci/ecs-params.yml \
+              --project-name TaskManagement \
+              --cluster-config task-management \
+              service up
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - test
+      - aws-ecr/build-and-push-image:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
+          account-url: AWS_ECR_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          create-repo: true
+          dockerfile: Dockerfile
+          region: AWS_DEFAULT_REGION
+          repo: ${AWS_RESOURCE_NAME_PREFIX}
+      - deploy:
+          requires:
+            - aws-ecr/build-and-push-image
+          filters:
+            branches:
+              only: master

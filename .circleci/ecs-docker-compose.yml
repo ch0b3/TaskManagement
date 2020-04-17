@@ -1,0 +1,21 @@
+version: '3'
+services:
+  app:
+    image: 813281301262.dkr.ecr.us-east-2.amazonaws.com/osakaya-tm
+    command: /bin/sh -c "rm -f /var/src/app/tmp/pids/server.pid;bundle exec rails s -b 0.0.0.0"
+    ports:
+      - '80:3000'
+    environment:
+      RAILS_ENV: production
+      PG_HOST: task-management-ecs-db.cn8cgs8lwsle.us-east-2.rds.amazonaws.com
+      PG_DATABASE: task-management-ecs-db
+      PG_USER: postgres
+      PG_PASSWORD: Kuroneko555
+      APP_DATABASE_PASSWORD: Kuroneko555
+      SECRET_KEY_BASE: 16291b7e665e47200fbc5dd77c8df5e925e3a45e0a937a6601b2cdc40f02daaac0fb2b3c95ce2bcd1dfdfa1f223e803dec1cddc242a252574c197930f2736cf3
+    working_dir: /var/src/app
+    privileged: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
